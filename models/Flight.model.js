@@ -7,29 +7,31 @@ const flightSchema = new Schema({
         type: String,
         required: true
     },
-    departureDate: {
+    departure: {
         type: Date,
-        required: true
+        required: true,
+
     },
-    arrivalDate: {
+    arrival: {
         type: Date,
-        required: true
-    },
-    departureTime: {
-        type: Date,
-        required: true
-    },
-    arrivalTime: {
-        type: Date,
-        required: true
+        required: true,
+
     },
     departureAirport: {
         type: String,
-        required: true
+        required: true,
+        enum: {
+            values: ["DTW", "LGA", "MDW", "ORD","CHI", "SFO", "OAK"],
+            message: "Must be a valid airport"
+        }
     },
     arrivalAirport: {
         type: String,
-        required: true
+        required: true,
+        enum: {
+            values: ["DTW", "LGA", "MDW", "ORD","CHI","SFO", "OAK"],
+            message: "Must be a valid airport"
+        }
     },
     passengerLimit: {
         type: Number,
@@ -39,9 +41,9 @@ const flightSchema = new Schema({
     currNumPassengers: {
         type: Number,
         required: true,
-        min: [0, "Plane cannot have fewer than 0 passengers"],
-        validator: [passengerLimitValidator = (value) => { return value <= this.passengerLimit }, "Number of passengers cannot exceed plane's capacity"]
+        min: [0, "Plane cannot have fewer than 0 passengers"]
     }
+
 });
 
 // TODO:  add more validation for other fields. mainly make sure that departure times go after arrival times

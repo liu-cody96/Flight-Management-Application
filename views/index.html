@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>HTML Forms</h2>
+
+<form action="/flights" method="post">
+    <label for="flight-number">Flight Number:</label><br>
+    <input type="number" id="flight-number" name="flight-number" min="0" value="0" required><br>
+    <label for="departure-time">Flight departure:</label>
+    <input type="datetime-local" id="departure-time"
+       name="departure-time" required><br><br>
+    <label for="arrival-time">Flight arrival:</label>
+    <input type="datetime-local" id="arrival-time"
+        name="arrival-time" required><br><br>
+    <label for="departure-airport">Departure Airport</label>
+    <input list="departure-airports" name="departure-airport" id="departure-airport" required>
+    <datalist id="departure-airports">
+        <option value="DTW">
+        <option value="LGA">
+        <option value="MDW">
+        <option value="ORD">
+        <option value="CHI">
+        <option value="SFO">
+        <option value="OAK">
+    </datalist>
+
+    <label for="arrival-airport">Arrival Airport</label>
+    <input list="arrival-airports" name="arrival-airport" id="arrival-airport" required>
+    <datalist id="arrival-airports">
+        <option value="DTW">
+        <option value="LGA">
+        <option value="MDW">
+        <option value="ORD">
+        <option value="CHI">
+        <option value="SFO">
+        <option value="OAK">
+    </datalist><br><br>
+
+    <label for="flight-capacity">Flight Capacity:</label><br>
+    <input type="number" id="flight-capacity" name="flight-capacity" value="1" min="1" required><br>
+    <label for="flight-passengers">Current Passenger Total:</label><br>
+    <input type="number" id="flight-passengers" name="flight-passengers" value="0" min="0"required><br>
+    <input type="submit" value="Submit"><br><br>
+    <input type="reset">
+</form>
+
+</body>
+</html>
