@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+    <h2>Get Flights </h2>
+
+    <div id="flights">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Departure Time</th>
+                <th scope="col">Arrival Time</th>
+                <th scope="col">Departure Airport</th>
+                <th scope="col">Arrival Airport</th>
+                <th scope="col">Passenger Limit</th>
+                <th scope="col">Occupied</th>
+              </tr>
+            </thead>
+            <tbody>
+                <%flightsList.forEach(flight => {%>
+                    <tr>
+                        <th scope="row"><%= flight.flightNumber %></th>
+                        <td><%= flight.departure %></td>
+                        <td><%= flight.arrival %></td>
+                        <td><%= flight.departureAirport %></td>
+                        <td><%= flight.arrivalAirport %></td>
+                        <td><%= flight.passengerLimit %></td>
+                        <td><%= flight.currNumPassengers %></td>
+                        <td><form action="/delete/<%= flight.flightNumber %>" method="post">
+                          <input type="submit" value="Delete" />
+                          </form>
+                        </td>
+                        <td><form action="/updates/<%= flight.flightNumber %>" method="get">
+                          <input type="submit" value="Edit" />
+                          </form>
+                        </td>
+                    </tr>
+                <%})%>
+            </tbody>
+          </table>
+    </div>
+
+</body>
+</html>
