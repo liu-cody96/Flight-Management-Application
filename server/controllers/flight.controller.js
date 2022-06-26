@@ -70,7 +70,7 @@ const deleteFlight = async(flightNumber) => {
     return flights;
 
 }
-
+/*
 const updateFlight = async (originalFlightNum, req) => {
     flightNumber = req["flight-number"];
     departure = req['departure-time'];
@@ -125,5 +125,5 @@ const updateFlight = async (originalFlightNum, req) => {
         throw { status: 400, message: err};
     }
 }
-
-module.exports = { createFlight, findAllFlights, deleteFlight, findOneFlight, updateFlight};
+*/
+module.exports = { createFlight, findAllFlights, deleteFlight, findOneFlight};
