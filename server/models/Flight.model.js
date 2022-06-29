@@ -7,13 +7,23 @@ const flightSchema = new Schema({
         type: String,
         required: true
     },
-    departure: {
-        type: Date,
+    departureDate: {
+        type: String,
         required: true,
 
     },
-    arrival: {
-        type: Date,
+    arrivalDate: {
+        type: String,
+        required: true,
+
+    },
+    departureTime: {
+        type: String,
+        required: true,
+
+    },
+    arrivalTime: {
+        type: String,
         required: true,
 
     },

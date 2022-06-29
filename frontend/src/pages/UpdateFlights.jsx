@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export const CreateFlights = () => {
+export const UpdateFlights = () => {
 
     const flightNumRef = useRef();
     const departureRef = useRef();
@@ -15,7 +15,7 @@ export const CreateFlights = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8080/flights',
+        axios.put('http://localhost:8080/flights',
                         { flightNumber: flightNumRef.current.value,
                             departure: departureRef.current.value,
                             arrival: arrivalRef.current.value,
@@ -25,11 +25,11 @@ export const CreateFlights = () => {
                             currNumPassengers: currPassengersRef.current.value
                         })
                         .then(() => {
-                            navigate('../new', {replace: true});
-                            alert("Flight " + flightNumRef.current.value  + " created");
+                            navigate('../update', {replace: true});
+                            alert("Flight " + flightNumRef.current.value  + " updated");
                         })
                         .catch(err => {
-                            navigate('../new', {replace: true});
+                            navigate('../update', {replace: true});
                             alert(err.response.data.message);
                         });
     }
@@ -87,7 +87,7 @@ export const CreateFlights = () => {
                 <label htmlFor="flight-passengers">Current Passenger Total:</label>
                 <input type="number" id="flight-passengers" name="flight-passengers" min="0" ref={currPassengersRef} required/>
                 <div>
-                    <input type="submit" value="Add Flight" />
+                    <input type="submit" value="Submit Edit" />
                 </div>
             </form>
 
