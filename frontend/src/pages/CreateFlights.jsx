@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Form } from '../components/Form/Form';
 
 export const CreateFlights = () => {
 
@@ -36,7 +37,8 @@ export const CreateFlights = () => {
 
     return (
         <>
-            <form className="MyForm" onSubmit={handleSubmit} >
+        <Form>
+            <form onSubmit={handleSubmit} style = {{border: "1px black", borderRadius: "3px"}}>
                 <label htmlFor="flight-number">Flight Number:</label>
                 <div>
                     <input type="number" id="flight-number" name="flight-number" min="0" ref={flightNumRef} required />
@@ -82,15 +84,19 @@ export const CreateFlights = () => {
                 </div>
 
                  <label htmlFor="flight-capacity">Flight Capacity:</label>
-                <input type="number" id="flight-capacity" name="flight-capacity" min="1" ref={passengerLimitRef} required/>
+                 <div>
+                    <input type="number" id="flight-capacity" name="flight-capacity" min="1" ref={passengerLimitRef} required/>
+                </div>
 
                 <label htmlFor="flight-passengers">Current Passenger Total:</label>
-                <input type="number" id="flight-passengers" name="flight-passengers" min="0" ref={currPassengersRef} required/>
+                <div>
+                    <input type="number" id="flight-passengers" name="flight-passengers" min="0" ref={currPassengersRef} required/>
+                </div>
                 <div>
                     <input type="submit" value="Add Flight" />
                 </div>
             </form>
-
+            </Form>
         </>
     );
 }

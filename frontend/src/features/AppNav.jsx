@@ -4,7 +4,7 @@ import { Nav, NavItem, NavLink, NavSection } from '../components/Nav';
 export const AppNav = () => {
 
     return (
-        <Nav backgroundColor={'#221D1D'} color={'white'}>
+        <Nav backgroundColor={'#0000b3'} color={'white'}>
             <NavSection jc="flex-start">
                 <NavItem>
                     <NavLink to="/">View Current Flights</NavLink>
@@ -17,11 +17,12 @@ export const AppNav = () => {
                 </NavItem>
             </NavSection>
             <NavSection jc="flex-end">
-                {/* If the username is truthy, render the hello message, otherwise don't render anything */}
+                {/*
                 <NavItem>
                     Sign In
                 </NavItem>
                 <NavItem>Sign Up</NavItem>
+                */}
             </NavSection>
         </Nav>
     );

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
-// Create a new component called Center
-export const Center = styled.div`
+export const Form = styled.div`
     display: flex;
     justify-content: center;
+    padding: 25px;
+    border: 1px black;
 `;

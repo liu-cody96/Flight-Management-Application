@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { FlightContainer } from './FlightContainer';
 export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime, arrivalTime, departureAirport, arrivalAirport, passengerLimit, currNumPassengers}) => {
 
-    const handleClick = (event) => {
+    const handleDelete = (event) => {
         axios.delete(`http://localhost:8080/flights/${flightNumber}`,
                         { flightNumber })
                         .then(() => {
@@ -15,18 +16,25 @@ export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime,
     }
 
     return (
-        <article>
+        <FlightContainer margin='15px'>
+            <div>
+                <h4>{flightNumber}</h4>
+            </div>
 
-            <h2>{flightNumber}</h2>
-            <h4>Departure Date: {departureDate}</h4>
-            <h4>Departure Time: {departureTime}</h4>
-            <h4>Arrival Date: {arrivalDate}</h4>
-            <h4>Arrival Time: {arrivalTime}</h4>
-            <h4>Departing From: {departureAirport}</h4>
-            <h4>Arriving From: {arrivalAirport}</h4>
-            <h4>Seats Remaining: {passengerLimit-currNumPassengers}/{passengerLimit}</h4>
+            <div>
+                <p>Departure Date: {departureDate}</p>
+                <p>Departure Time: {departureTime}</p>
+                <p>Arrival Date: {arrivalDate}</p>
+                <p>Arrival Time: {arrivalTime}</p>
+                <p>Departing From: {departureAirport}</p>
+                <p>Arriving From: {arrivalAirport}</p>
+                <p>Seats Remaining: {passengerLimit-currNumPassengers}/{passengerLimit}</p>
+                <div>
+                    <button className="flight-delete" onClick={handleDelete}>Delete Flight</button>
+                </div>
+            </div>
 
-            <button className="flight-delete" onClick={handleClick}>Delete Flight</button>
-        </article>
+
+        </FlightContainer>
     );
 }
