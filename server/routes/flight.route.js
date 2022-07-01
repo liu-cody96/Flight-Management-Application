@@ -35,7 +35,6 @@ router.put('/', async (req, res) => {
         const flightId = await updateFlight(req.body);
         res.status(201).json({_id: flightId});
     }catch (err){
-        console.log(err);
         res.status(err?.status || 500).json(err);
     }
 });
@@ -47,7 +46,6 @@ router.delete('/:id', async(req, res) => {
         const flight = await deleteFlight(req.params.id);
         res.status(200).json(flight);
     }catch (err){
-
         res.status(err?.status || 400).json(err);
     }
 });

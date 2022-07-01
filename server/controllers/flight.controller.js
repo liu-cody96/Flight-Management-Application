@@ -20,7 +20,7 @@ const createFlightObject = (formDataBody) => {
     arrivalDate = arrivalArr[0];
     arrivalTime = arrivalArr[1];
 
-    const newFlight = new Flight({
+    const newFlight = {
         flightNumber,
         departureDate,
         arrivalDate,
@@ -30,7 +30,7 @@ const createFlightObject = (formDataBody) => {
         arrivalAirport,
         passengerLimit,
         currNumPassengers
-    });
+    };
 
     return newFlight;
 }
@@ -73,7 +73,7 @@ const createFlight = async (formData) => {
             throw "ERROR: This flight number is already in use. Cannot have duplicates.";
         }
         validateFormData(formData);
-        let flight = createFlightObject(formData);
+        let flight = new Flight(createFlightObject(formData));
         await flight.save();
         return flight._id;
 
@@ -102,9 +102,7 @@ const updateFlight = async (formData) => {
         updateFlightNum = formData["flightNumber"];
         const flightFound = await Flight.findOne({flightNumber: updateFlightNum});
 
-        console.log(flightFound);
-        console.log(flightFound === null);
-        console.log(flightFound == null);
+
         if (flightFound === null) {
             let errMsg = `ERROR: Cannot update Flight ${updateFlightNum} as it does not exist.`
             throw errMsg;
@@ -112,7 +110,10 @@ const updateFlight = async (formData) => {
 
         validateFormData(formData);
         const opts = { new: true };
-        const updatedFlight = await Flight.findOneAndUpdate({ flightNumber: updateFlightNum } , formData, opts);
+        const updatedFlightData = createFlightObject(formData);
+
+        const updatedFlight = await Flight.findOneAndUpdate({ flightNumber: updateFlightNum } , updatedFlightData, opts);
+
         return updatedFlight;
     }
 

@@ -6,7 +6,6 @@ import { useLocation} from "react-router-dom";
 
 export const UpdateFlights = (props) => {
 
-    const flightNumRef = useRef();
     const departureRef = useRef();
     const arrivalRef = useRef();
     const departureAirportRef = useRef();
@@ -19,23 +18,30 @@ export const UpdateFlights = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.put('http://localhost:8080/flights',
-                        { flightNumber: flightNumRef.current.value,
-                            departure: departureRef.current.value,
-                            arrival: arrivalRef.current.value,
-                            departureAirport: departureAirportRef.current.value,
-                            arrivalAirport: arrivalAirportRef.current.value,
-                            passengerLimit: passengerLimitRef.current.value,
-                            currNumPassengers: currPassengersRef.current.value
-                        })
-                        .then(() => {
-                            navigate('../update', {replace: true});
-                            alert("Flight " + flightNumRef.current.value  + " updated");
-                        })
-                        .catch(err => {
-                            navigate('../update', {replace: true});
-                            alert(err.response.data.message);
-                        });
+        console.log(location);
+        console.log(location.state.flightNumber);
+        const currState = {
+            flightNumber: location.state.flightNumber,
+            arrival: arrivalRef.current.value,
+            departure: departureRef.current.value,
+            departureAirport: departureAirportRef.current.value,
+            arrivalAirport: arrivalAirportRef.current.value,
+            passengerLimit: passengerLimitRef.current.value,
+            currNumPassengers: currPassengersRef.current.value
+        }
+        axios.put('http://localhost:8080/flights', currState)
+            .then(() => {
+                navigate('/', {});
+
+                alert("Flight " + currState.flightNumber + " updated");
+            })
+            .catch(err => {
+                navigate('/update', {
+                    state: currState
+
+                });
+                alert(err.response.data.message);
+            });
     }
 
     return (
@@ -48,12 +54,12 @@ export const UpdateFlights = (props) => {
                 <br></br>
                 <label htmlFor="departure-time">Flight departure:</label>
                 <div>
-                    <input type="datetime-local" id="departure-time" name="departure-time" defaultValue={location.state.flightDeparture} ref={departureRef} required />
+                    <input type="datetime-local" id="departure-time" name="departure-time" defaultValue={location.state.departure} ref={departureRef} required />
                 </div>
 
                 <label htmlFor="arrival-time">Flight arrival:</label>
                 <div>
-                    <input type="datetime-local" id="arrival-time"name="arrival-time" defaultValue={location.state.flightArrival} ref={arrivalRef} required/>
+                    <input type="datetime-local" id="arrival-time"name="arrival-time" defaultValue={location.state.arrival} ref={arrivalRef} required/>
                 </div>
 
 

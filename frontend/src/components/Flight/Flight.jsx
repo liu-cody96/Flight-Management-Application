@@ -24,8 +24,8 @@ export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime,
         navigate("/update", {
             state: {
                 flightNumber: flightNumber,
-                flightArrival: arrivalDate + "T" + arrivalTime,
-                flightDeparture: departureDate + "T" + departureTime,
+                arrival: arrivalDate + "T" + arrivalTime,
+                departure: departureDate + "T" + departureTime,
                 departureAirport: departureAirport,
                 arrivalAirport: arrivalAirport,
                 passengerLimit: passengerLimit,
