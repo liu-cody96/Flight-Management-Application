@@ -12,9 +12,7 @@ export const AppNav = () => {
                 <NavItem>
                     <NavLink to="/new">Add New Flight</NavLink>
                 </NavItem>
-                <NavItem>
-                    <NavLink to="/update">Update Existing Flight</NavLink>
-                </NavItem>
+
             </NavSection>
             <NavSection jc="flex-end">
                 {/*

@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { FlightContainer } from './FlightContainer';
-export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime, arrivalTime, departureAirport, arrivalAirport, passengerLimit, currNumPassengers}) => {
+import { FlightUpdateButton} from './FlightUpdateButton';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
+
+export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime, arrivalTime, departureAirport, arrivalAirport, passengerLimit, currNumPassengers}) => {
+    const navigate = useNavigate();
     const handleDelete = (event) => {
         axios.delete(`http://localhost:8080/flights/${flightNumber}`,
                         { flightNumber })
@@ -14,6 +19,20 @@ export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime,
                             alert(err.response.data.message);
                         });
     }
+
+    const navigateToUpdate = () => {
+        navigate("/update", {
+            state: {
+                flightNumber: flightNumber,
+                flightArrival: arrivalDate + "T" + arrivalTime,
+                flightDeparture: departureDate + "T" + departureTime,
+                departureAirport: departureAirport,
+                arrivalAirport: arrivalAirport,
+                passengerLimit: passengerLimit,
+                currNumPassengers: currNumPassengers
+            },
+        });
+    };
 
     return (
         <FlightContainer margin='15px'>
@@ -32,6 +51,11 @@ export const Flight = ({flightNumber, departureDate, arrivalDate, departureTime,
                 <div>
                     <button className="flight-delete" onClick={handleDelete}>Delete Flight</button>
                 </div>
+                <div>
+                    <button onClick={navigateToUpdate}>Update Flight</button>
+                </div>
+
+
             </div>
 
 
