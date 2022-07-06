@@ -1,28 +1,51 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { FrontPageHeader } from "../components/FrontPageHeader/FrontPageHeader";
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 import {Stack, Button} from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const GetFlights = () => {
 
+
     const [flights, setFlights] = useState([]);
-    const [count, setCount] = useState(0);
-    const [flightsPluralOrSingle, setflightsPluralOrSingle] = useState("flights");
+    const [formValues, setFormValues] = useState({});
     const navigate = useNavigate();
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({
+          ...formValues,
+          [name]: value,
+        });
+      };
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios.post('http://localhost:8080/flights',
+                        { flightNumber: formValues["flightNumber"],
+                            departure: formValues["departure"],
+                            arrival: formValues["arrival"],
+                            departureAirport: formValues["departureAirport"],
+                            arrivalAirport: formValues["arrivalAirport"],
+                            passengerLimit: formValues["passengerLimit"],
+                            currNumPassengers: formValues["currNumPassengers"]
+                        })
+                        .then(() => {
+                            alert("Flight " + formValues["flightNumber"]  + " created");
+                        })
+                        .catch(err => {
+                            alert(err.response.data.message);
+                        });
+    }
+
 
     const getFlights = () => {
         axios.get('http://localhost:8080/flights')
         .then((res) => {
             setFlights(res.data);
-            setCount(res.data.length);
-            if (res.data.length === 1) {
-                setflightsPluralOrSingle("flight");
-            }
-            else {
-                setflightsPluralOrSingle("flights");
-            }
         });
     }
 
@@ -39,7 +62,6 @@ export const GetFlights = () => {
                             alert("Flight " + flightNumber  + " deleted");
                         })
                         .catch(err => {
-                            window.location.reload();
                             alert(err.response.data.message);
                         });
     }
@@ -58,11 +80,68 @@ export const GetFlights = () => {
         });
     };
 
+
+
     return (
         <>
-        <div>
-            <FrontPageHeader><h2>{count} {flightsPluralOrSingle} to display.</h2></FrontPageHeader>
+        <div style={{padding: '15px'}}>
+            <Accordion>
+                    <AccordionSummary
+                    id='panel1-header'
+                    aria-controls='panel1-content'
+                    expandIcon = {<ExpandMoreIcon/>}>
+                        <Typography>Add New Flight</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <form id="myForm" onSubmit={handleSubmit}>
+                            <Stack spacing={2}>
+                                <Stack spacing={2} direction='row'>
+                                    <label htmlFor="flight-number">Flight Number:</label>
+                                    <input label='Flight Number' id='flight-number' name="flightNumber" value={formValues.name} type="number" min="0" onChange={handleInputChange} required/>
+                                    <label htmlFor="flight-capacity">Flight Capacity:</label>
+                                    <input type="number" id="flight-capacity" name="passengerLimit" min="1" value={formValues.name} onChange={handleInputChange} required/>
+                                    <label htmlFor="flight-passengers">Current Passenger Total:</label>
+                                    <input type="number" id="flight-passengers" name="currNumPassengers" min="0" value={formValues.name} onChange={handleInputChange} required/>
+                                </Stack>
+                                <Stack spacing={2} direction='row'>
+                                    <label htmlFor="departure-time">Flight departure:</label>
+                                    <input type="datetime-local" id="departure-time" name="departure" value={formValues.name} onChange={handleInputChange} required />
+                                    <label htmlFor="arrival-time">Flight arrival:</label>
+                                    <input type="datetime-local" id="arrival-time"name="arrival" value={formValues.name} onChange={handleInputChange} required/>
+                                </Stack>
+                                <Stack spacing={2} direction='row'>
+                                    <label htmlFor="departure-airport">Departure Airport:</label>
+                                    <input type="text" list="departure-airports" name="departureAirport" id="departure-airport" value={formValues.name} onChange={handleInputChange} required/>
+                                    <datalist id="departure-airports">
+                                        <option value="DTW"/>
+                                        <option value="LGA"/>
+                                        <option value="MDW"/>
+                                        <option value="ORD"/>
+                                        <option value="CHI"/>
+                                        <option value="SFO"/>
+                                        <option value="OAK"/>
+                                    </datalist>
+                                    <label htmlFor="arrival-airport">Arrival Airport:</label>
+                                    <input type="text" list="arrival-airports" name="arrivalAirport" id="arrival-airport" value={formValues.name} onChange={handleInputChange} required/>
+                                    <datalist id="arrival-airports">
+                                        <option value="DTW"/>
+                                        <option value="LGA"/>
+                                        <option value="MDW"/>
+                                        <option value="ORD"/>
+                                        <option value="CHI"/>
+                                        <option value="SFO"/>
+                                        <option value="OAK"/>
+                                    </datalist>
+                                    <Button variant="contained" color="primary" type="submit">Submit</Button>
+                                    <Button variant="contained" color="secondary" onClick={() => document.getElementById("myForm").reset()}>Clear</Button>
+                                </Stack>
 
+
+                            </Stack>
+                        </form>
+                    </AccordionDetails>
+
+            </Accordion>
         </div>
 
         <div style={{padding: '15px'}}>

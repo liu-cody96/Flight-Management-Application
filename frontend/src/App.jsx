@@ -18,7 +18,6 @@ const App = () => {
         <Routes>
             {/* route to landing page if browser URL becomes '/' */}
             <Route path="/" element={<GetFlights/>}></Route>
-            <Route path="/new" element={<CreateFlights/>}></Route>
             <Route path="/update" element={<UpdateFlights/>}></Route>
             {/* route anything else to the error page */}
             <Route path="*" element={<Error/>}></Route>

@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import {Form } from '../components/Form/Form';
 import { useLocation} from "react-router-dom";
 
-import { FrontPageHeader } from "../components/FrontPageHeader/FrontPageHeader";
-
 export const UpdateFlights = (props) => {
 
     const departureRef = useRef();
