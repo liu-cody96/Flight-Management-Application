@@ -120,6 +120,7 @@ const updateFlight = async (formData) => {
     catch (err) {
         throw { status: 400, message: err};
     }
+
 }
 
 module.exports = { createFlight, updateFlight, findAllFlights, deleteFlight};

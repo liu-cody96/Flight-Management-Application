@@ -1,7 +1,7 @@
 
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Error, GetFlights, CreateFlights, UpdateFlights } from "./pages";
+import { Error, GetFlights } from "./pages";
 import { AppNav } from './features';
 // this is a function-based component
 const App = () => {
@@ -18,7 +18,6 @@ const App = () => {
         <Routes>
             {/* route to landing page if browser URL becomes '/' */}
             <Route path="/" element={<GetFlights/>}></Route>
-            <Route path="/update" element={<UpdateFlights/>}></Route>
             {/* route anything else to the error page */}
             <Route path="*" element={<Error/>}></Route>
         </Routes>

@@ -2,7 +2,6 @@ const router = require('express').Router();
 const { createFlight, findAllFlights, updateFlight, deleteFlight } = require('../controllers/flight.controller');
 
 
-// just do simple delete and put. modify get to be a search functionality sort of thing
 router.get('/', async (req, res) => {
     try {
         const flights = await findAllFlights();

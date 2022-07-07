@@ -1,17 +1,20 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 import {Stack, Button} from "@mui/material";
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {EditableRow} from '../components/Flight/EditableRow';
+import {ReadOnlyRow} from '../components/Flight/ReadOnlyRow';
 
 export const GetFlights = () => {
 
-
     const [flights, setFlights] = useState([]);
     const [formValues, setFormValues] = useState({});
+    const [editFormValues, setEditFormValues] = useState({});
     const navigate = useNavigate();
+    const [editId, setEditId] = useState();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -19,8 +22,25 @@ export const GetFlights = () => {
           ...formValues,
           [name]: value,
         });
-      };
+    };
 
+    const handleClickEdit = (event, flight) => {
+        event.preventDefault();
+        setEditId(parseInt(flight.flightNumber));
+
+        setEditFormValues({...flight});
+    }
+
+    const handleEditFormChange = (event) => {
+        event.preventDefault();
+        const fieldName = event.target.getAttribute('name');
+        const fieldValue = event.target.value;
+
+        const newFormData = { ...editFormValues};
+        newFormData[fieldName] = fieldValue;
+
+        setEditFormValues(newFormData);
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,11 +54,33 @@ export const GetFlights = () => {
                             currNumPassengers: formValues["currNumPassengers"]
                         })
                         .then(() => {
+                            window.location.reload();
                             alert("Flight " + formValues["flightNumber"]  + " created");
                         })
                         .catch(err => {
                             alert(err.response.data.message);
                         });
+    }
+
+    const handleEditSubmit = (event) => {
+        event.preventDefault();
+        const currState = {
+            flightNumber: editFormValues.flightNumber,
+            arrival: editFormValues.arrivalDate + "T" + editFormValues.arrivalTime,
+            departure: editFormValues.departureDate + "T" + editFormValues.departureTime,
+            departureAirport: editFormValues.departureAirport,
+            arrivalAirport: editFormValues.arrivalAirport,
+            passengerLimit: editFormValues.passengerLimit,
+            currNumPassengers: editFormValues.currNumPassengers
+        }
+        axios.put('http://localhost:8080/flights', currState)
+            .then(() => {
+                alert("Flight " + currState.flightNumber + " updated");
+                window.location.reload();
+            })
+            .catch(err => {
+                alert(err.response.data.message);
+            });
     }
 
 
@@ -53,18 +95,6 @@ export const GetFlights = () => {
         getFlights();
 
     }, []);
-
-    const handleDelete = (flightNumber) => {
-        axios.delete(`http://localhost:8080/flights/${flightNumber}`,
-                        { flightNumber })
-                        .then(() => {
-                            window.location.reload();
-                            alert("Flight " + flightNumber  + " deleted");
-                        })
-                        .catch(err => {
-                            alert(err.response.data.message);
-                        });
-    }
 
     const navigateToUpdate = (inputs) => {
         navigate("/update", {
@@ -145,56 +175,35 @@ export const GetFlights = () => {
         </div>
 
         <div style={{padding: '15px'}}>
-            <TableContainer component={Paper} sx={{maxHeight: '75vh'}}>
-                    <Table aria-label='simple-table' stickyHeader>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Flight Number</TableCell>
-                                <TableCell width='100px'>Departure Date</TableCell>
-                                <TableCell>Departure Time (24-hour clock)</TableCell>
-                                <TableCell width='100px'>Arrival Date</TableCell>
-                                <TableCell>Arrival Time (24-hour clock)</TableCell>
-                                <TableCell>Departing From</TableCell>
-                                <TableCell>Arriving From</TableCell>
-                                <TableCell>Seats Remaining</TableCell>
-                                <TableCell align='center'>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                flights.map(flight => (
-                                    <TableRow key={flight._id} sx={{ '&:last-child td, &:last-child th': {border: 0}}}>
-                                        <TableCell>{flight.flightNumber}</TableCell>
-                                        <TableCell>{flight.departureDate}</TableCell>
-                                        <TableCell>{flight.departureTime}</TableCell>
-                                        <TableCell>{flight.arrivalDate}</TableCell>
-                                        <TableCell>{flight.arrivalTime}</TableCell>
-                                        <TableCell>{flight.departureAirport}</TableCell>
-                                        <TableCell>{flight.arrivalAirport}</TableCell>
-                                        <TableCell>{flight.passengerLimit - flight.currNumPassengers}/{flight.passengerLimit}</TableCell>
-                                        <TableCell>
-                                            <Stack spacing={.5} direction='row'>
-                                                <Button variant='contained' size="small" color='primary' onClick={() => navigateToUpdate({
-                                                        flightNumber: flight.flightNumber,
-                                                        arrivalDate: flight.arrivalDate,
-                                                        arrivalTime: flight.arrivalTime,
-                                                        departureDate: flight.departureDate,
-                                                        departureTime: flight.departureTime,
-                                                        departureAirport: flight.departureAirport,
-                                                        arrivalAirport: flight.arrivalAirport,
-                                                        passengerLimit: flight.passengerLimit,
-                                                        currNumPassengers: flight.currNumPassengers
-                                                    })}>Edit</Button>
-                                                <Button variant='contained' size="small" color='error'onClick={() => handleDelete(flight.flightNumber)}>Delete</Button>
-
-                                            </Stack>
-                                         </TableCell>
-                                    </TableRow>
-                                ))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+            <form onSubmit={handleEditSubmit}>
+                <TableContainer component={Paper} sx={{maxHeight: '75vh'}}>
+                        <Table aria-label='simple-table' stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Flight Number</TableCell>
+                                    <TableCell width='100px'>Departure Date</TableCell>
+                                    <TableCell>Departure Time (24-hour clock)</TableCell>
+                                    <TableCell width='100px'>Arrival Date</TableCell>
+                                    <TableCell>Arrival Time (24-hour clock)</TableCell>
+                                    <TableCell>Departing From</TableCell>
+                                    <TableCell>Arriving From</TableCell>
+                                    <TableCell>Seats Remaining</TableCell>
+                                    <TableCell align='center'>Actions</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    flights.map(flight => (
+                                        <Fragment key={flight._id}>
+                                            {editId === parseInt(flight.flightNumber) ?
+                                            <EditableRow flight={editFormValues} handleEditFormChange={handleEditFormChange}/> : <ReadOnlyRow flight={flight} handleClickEdit={handleClickEdit}/>}
+                                        </Fragment>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </form>
             </div>
 
 
