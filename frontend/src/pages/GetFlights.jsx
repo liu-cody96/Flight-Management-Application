@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, Fragment } from 'react';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 import {Stack, Button} from "@mui/material";
@@ -13,8 +12,8 @@ export const GetFlights = () => {
     const [flights, setFlights] = useState([]);
     const [formValues, setFormValues] = useState({});
     const [editFormValues, setEditFormValues] = useState({});
-    const navigate = useNavigate();
     const [editId, setEditId] = useState();
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -27,7 +26,6 @@ export const GetFlights = () => {
     const handleClickEdit = (event, flight) => {
         event.preventDefault();
         setEditId(parseInt(flight.flightNumber));
-
         setEditFormValues({...flight});
     }
 
@@ -60,6 +58,12 @@ export const GetFlights = () => {
                         .catch(err => {
                             alert(err.response.data.message);
                         });
+    }
+
+    const handleEditCancel = (event) => {
+        event.preventDefault();
+        setEditFormValues({});
+        setEditId(null);
     }
 
     const handleEditSubmit = (event) => {
@@ -96,21 +100,6 @@ export const GetFlights = () => {
 
     }, []);
 
-    const navigateToUpdate = (inputs) => {
-        navigate("/update", {
-            state: {
-                flightNumber: inputs.flightNumber,
-                arrival: inputs.arrivalDate + "T" + inputs.arrivalTime,
-                departure: inputs.departureDate + "T" + inputs.departureTime,
-                departureAirport: inputs.departureAirport,
-                arrivalAirport: inputs.arrivalAirport,
-                passengerLimit: inputs.passengerLimit,
-                currNumPassengers: inputs.currNumPassengers
-            },
-        });
-    };
-
-
 
     return (
         <>
@@ -118,11 +107,13 @@ export const GetFlights = () => {
             <Accordion>
                     <AccordionSummary
                     id='panel1-header'
-                    aria-controls='panel1-content'
-                    expandIcon = {<ExpandMoreIcon/>}>
+                    aria-controls='panel1-content' expandIcon = {<ExpandMoreIcon/>} sx={{
+                        backgroundColor: '#203182',
+                        color: 'white'
+                    }}>
                         <Typography>Add New Flight</Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
+                    <AccordionDetails sx = {{paddingTop: '15px'}}>
                         <form id="myForm" onSubmit={handleSubmit}>
                             <Stack spacing={2}>
                                 <Stack spacing={2} direction='row'>
@@ -176,33 +167,43 @@ export const GetFlights = () => {
 
         <div style={{padding: '15px'}}>
             <form onSubmit={handleEditSubmit}>
-                <TableContainer component={Paper} sx={{maxHeight: '75vh'}}>
-                        <Table aria-label='simple-table' stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Flight Number</TableCell>
-                                    <TableCell width='100px'>Departure Date</TableCell>
-                                    <TableCell>Departure Time (24-hour clock)</TableCell>
-                                    <TableCell width='100px'>Arrival Date</TableCell>
-                                    <TableCell>Arrival Time (24-hour clock)</TableCell>
-                                    <TableCell>Departing From</TableCell>
-                                    <TableCell>Arriving From</TableCell>
-                                    <TableCell>Seats Remaining</TableCell>
-                                    <TableCell align='center'>Actions</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {
-                                    flights.map(flight => (
-                                        <Fragment key={flight._id}>
-                                            {editId === parseInt(flight.flightNumber) ?
-                                            <EditableRow flight={editFormValues} handleEditFormChange={handleEditFormChange}/> : <ReadOnlyRow flight={flight} handleClickEdit={handleClickEdit}/>}
-                                        </Fragment>
-                                    ))
-                                }
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                <Accordion>
+                    <AccordionSummary
+                        id='panel1-header'
+                        aria-controls='panel1-content' sx={{
+                            backgroundColor: '#203182',
+                            color: 'white'
+                        }}>
+                            <Typography>View Flights</Typography>
+                    </AccordionSummary>
+                    <TableContainer component={Paper} sx={{maxHeight: '75vh'}}>
+                            <Table aria-label='simple-table' stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}>Flight Number</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}width='100px'>Departure Date</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}>Departure Time (24-hour clock)</TableCell>
+                                        <TableCell width='100px' sx={{backgroundColor: '#E3E3E3'}}>Arrival Date</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}>Arrival Time (24-hour clock)</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}>Departing From</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}>Arriving From</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}}>Seats Remaining</TableCell>
+                                        <TableCell sx={{backgroundColor: '#E3E3E3'}} align='center'>Actions</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        flights.map(flight => (
+                                            <Fragment key={flight._id}>
+                                                {editId === parseInt(flight.flightNumber) ?
+                                                <EditableRow flight={editFormValues} handleEditFormChange={handleEditFormChange} handleEditCancel={handleEditCancel}/> : <ReadOnlyRow flight={flight} handleClickEdit={handleClickEdit}/>}
+                                            </Fragment>
+                                        ))
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Accordion>
                 </form>
             </div>
 

@@ -1,11 +1,11 @@
 import { TableRow, TableCell } from '@mui/material';
 import {Stack, Button} from "@mui/material";
 
-export const EditableRow = ({flight, handleEditFormChange}) => {
+export const EditableRow = ({flight, handleEditFormChange, handleEditCancel}) => {
 
     return (
         <>
-            <TableRow sx={{ '&:last-child td, &:last-child th': {border: 0}}}>
+            <TableRow sx={{ '&:last-child td, &:last-child th': {border: 0}, backgroundColor: '#E3E3E3'}}>
                 <TableCell>{flight.flightNumber}</TableCell>
                 <TableCell><input type="date" name="departureDate" defaultValue={flight.departureDate} onChange={handleEditFormChange} required /></TableCell>
                 <TableCell><input type="time" name="departureTime" defaultValue={flight.departureTime} onChange={handleEditFormChange} required /></TableCell>
@@ -44,7 +44,7 @@ export const EditableRow = ({flight, handleEditFormChange}) => {
                 <TableCell>
                 <Stack spacing={.5} direction='row'>
                     <Button variant='outlined' size="small" color='success' type="submit">Save</Button>
-                    <Button variant='outlined' size="small" color='error' onClick={(event) => {console.log('as')}}>Cancel</Button>
+                    <Button variant='outlined' size="small" color='error' onClick={(event) => {handleEditCancel(event)}}>Cancel</Button>
                 </Stack>
 
                 </TableCell>

@@ -51,7 +51,12 @@ const validateFormData = (formDataBody) => {
 
     // arrival airport must be different from departureAirport
     if (departureAirport === arrivalAirport) {
-        throw "ERROR: Arrival Airport must be different from Departure Airport";
+        throw "ERROR: Arrival Airport must be different from Departure Airport.";
+    }
+
+    const newAirports = new Set(['DTW','LGA','MDW','ORD','CHI','SFO','OAK']);
+    if (!(newAirports.has(departureAirport)) || !(newAirports.has(arrivalAirport))) {
+        throw "ERROR: Please make sure you are inputting valid airports.";
     }
 
     // if currNumPassengers > passengerLimit, throw an error

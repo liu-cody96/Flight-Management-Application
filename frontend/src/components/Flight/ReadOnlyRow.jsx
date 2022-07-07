@@ -7,8 +7,8 @@ export const ReadOnlyRow = ({flight, handleClickEdit}) => {
         axios.delete(`http://localhost:8080/flights/${flightNumber}`,
                         { flightNumber })
                         .then(() => {
-                            window.location.reload();
                             alert("Flight " + flightNumber  + " deleted");
+                            window.location.reload();
                         })
                         .catch(err => {
                             alert(err.response.data.message);
