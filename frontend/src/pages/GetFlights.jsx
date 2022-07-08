@@ -170,6 +170,7 @@ export const GetFlights = () => {
                 <Accordion>
                     <AccordionSummary
                         id='panel1-header'
+                        expandIcon = {<ExpandMoreIcon/>}
                         aria-controls='panel1-content' sx={{
                             backgroundColor: '#203182',
                             color: 'white'
