@@ -13,6 +13,12 @@ export const GetFlights = () => {
     const [formValues, setFormValues] = useState({});
     const [editFormValues, setEditFormValues] = useState({});
     const [editId, setEditId] = useState();
+    const [expanded, setExpanded] = useState(false);
+
+    //expand accordion on mount
+    useEffect(() => {
+        setExpanded(true);
+    }, []);
 
 
     const handleInputChange = (e) => {
@@ -167,14 +173,14 @@ export const GetFlights = () => {
 
         <div style={{padding: '15px'}}>
             <form onSubmit={handleEditSubmit}>
-                <Accordion>
+                <Accordion expanded={expanded===true}>
                     <AccordionSummary
                         id='panel1-header'
                         expandIcon = {<ExpandMoreIcon/>}
                         aria-controls='panel1-content' sx={{
                             backgroundColor: '#203182',
                             color: 'white'
-                        }}>
+                        }} onClick={() => setExpanded(!expanded)}>
                             <Typography>View Flights</Typography>
                     </AccordionSummary>
                     <TableContainer component={Paper} sx={{maxHeight: '75vh'}}>
