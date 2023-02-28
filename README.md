@@ -1,7 +1,9 @@
 # Flight-Management-Application
 
-A full-stack web application built with the MERN stack with full CRUD functionality that allows users
-to create, update flight data via form entry. Also allows users to delete flight data and read all flight data. 
+A generic full-stack web application built with the MERN stack with full CRUD functionality that allows users
+to create, update data via form entry. Also allows users to delete data and read all data. 
+
+This code is open-sourced and just meant to be a demo, so feel free to use it as a template for building similar applications :) 
 
 Frontend implemented with Material UI and React, and backend implemented with MongoDB, Express, and Node. 
 
