@@ -80,7 +80,8 @@ const createFlight = async (formData) => {
         validateFormData(formData);
         let flight = new Flight(createFlightObject(formData));
         await flight.save();
-        return flight._id;
+        
+        return flight;
 
     }
 

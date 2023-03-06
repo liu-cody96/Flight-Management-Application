@@ -2,13 +2,19 @@ import { TableRow, TableCell } from '@mui/material';
 import {Stack, Button} from "@mui/material";
 import axios from 'axios';
 
-export const ReadOnlyRow = ({flight, handleClickEdit}) => {
+export const ReadOnlyRow = ({flights, setFlights, flight, handleClickEdit}) => {
     const handleDelete = (flightNumber) => {
         axios.delete(`http://localhost:8080/flights/${flightNumber}`,
                         { flightNumber })
-                        .then(() => {
+                        .then((res) => {
                             alert("Flight " + flightNumber  + " deleted");
-                            window.location.reload();
+                            let newFlights = [];
+                            for (let flight of flights) {
+                                if (flight.flightNumber !== flightNumber) {
+                                    newFlights.push(flight)
+                                }
+                            }
+                            setFlights(newFlights);
                         })
                         .catch(err => {
                             alert(err.response.data.message);

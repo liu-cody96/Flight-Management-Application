@@ -57,9 +57,11 @@ export const GetFlights = () => {
                             passengerLimit: formValues["passengerLimit"],
                             currNumPassengers: formValues["currNumPassengers"]
                         })
-                        .then(() => {
-                            window.location.reload();
+                        .then((res) => {
                             alert("Flight " + formValues["flightNumber"]  + " created");
+                            // avoid page reload by resetting state
+                            // avoid making an additional HTTP request by using the new flight returned from the backend
+                            setFlights([...flights, res.data._id]);
                         })
                         .catch(err => {
                             alert(err.response.data.message);
@@ -84,9 +86,15 @@ export const GetFlights = () => {
             currNumPassengers: editFormValues.currNumPassengers
         }
         axios.put('http://localhost:8080/flights', currState)
-            .then(() => {
+            .then((res) => {
                 alert("Flight " + currState.flightNumber + " updated");
-                window.location.reload();
+
+                // avoid page reload by resetting state
+                // avoid making an additional HTTP request by using the new flight returned from the backend
+                setEditFormValues({});
+                setEditId(null);
+                let newFlights = flights.map(element => element._id === res.data._id._id ? {...res.data._id} : element);
+                setFlights(newFlights);
             })
             .catch(err => {
                 alert(err.response.data.message);
@@ -103,7 +111,6 @@ export const GetFlights = () => {
 
     useEffect(() => {
         getFlights();
-
     }, []);
 
 
@@ -203,7 +210,7 @@ export const GetFlights = () => {
                                         flights.map(flight => (
                                             <Fragment key={flight._id}>
                                                 {editId === parseInt(flight.flightNumber) ?
-                                                <EditableRow flight={editFormValues} handleEditFormChange={handleEditFormChange} handleEditCancel={handleEditCancel}/> : <ReadOnlyRow flight={flight} handleClickEdit={handleClickEdit}/>}
+                                                <EditableRow flight={editFormValues} handleEditFormChange={handleEditFormChange} handleEditCancel={handleEditCancel}/> : <ReadOnlyRow flights={flights} setFlights={setFlights} flight={flight} handleClickEdit={handleClickEdit}/>}
                                             </Fragment>
                                         ))
                                     }
