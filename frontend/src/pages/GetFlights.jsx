@@ -154,6 +154,8 @@ export const GetFlights = () => {
                                         <option value="CHI"/>
                                         <option value="SFO"/>
                                         <option value="OAK"/>
+                                        <option value="BOS"/>
+                                        <option value="LAX"/>
                                     </datalist>
                                     <label htmlFor="arrival-airport">Arrival Airport:</label>
                                     <input type="text" list="arrival-airports" name="arrivalAirport" id="arrival-airport" value={formValues.name} onChange={handleInputChange} required/>
@@ -165,6 +167,8 @@ export const GetFlights = () => {
                                         <option value="CHI"/>
                                         <option value="SFO"/>
                                         <option value="OAK"/>
+                                        <option value="BOS"/>
+                                        <option value="LAX"/>
                                     </datalist>
                                     <Button variant="contained" color="primary" type="submit">Submit</Button>
                                     <Button variant="contained" color="secondary" onClick={() => document.getElementById("myForm").reset()}>Clear</Button>
