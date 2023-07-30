@@ -9,4 +9,4 @@ This code is open-sourced and just meant to be a demo, so feel free to use it as
 
 Frontend implemented with Material UI and React, and backend implemented with MongoDB, Express, and Node. 
 
-![Screen Recording - 24 December 2022](https://user-images.githubusercontent.com/91299838/209448398-3eab2380-dd24-493c-b4dd-f6137914e818.gif)
+![Project Name](https://user-images.githubusercontent.com/91299838/223139810-4f5fc004-c5f8-4937-bac4-11e02c9c0469.gif)
