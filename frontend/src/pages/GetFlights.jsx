@@ -48,7 +48,7 @@ export const GetFlights = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8080/flights',
+        axios.post('https://flight-management-app-2gci.onrender.com/flights',
                         { flightNumber: formValues["flightNumber"],
                             departure: formValues["departure"],
                             arrival: formValues["arrival"],
@@ -85,7 +85,7 @@ export const GetFlights = () => {
             passengerLimit: editFormValues.passengerLimit,
             currNumPassengers: editFormValues.currNumPassengers
         }
-        axios.put('http://localhost:8080/flights', currState)
+        axios.put('https://flight-management-app-2gci.onrender.com/flights', currState)
             .then((res) => {
                 alert("Flight " + currState.flightNumber + " updated");
 
@@ -103,7 +103,7 @@ export const GetFlights = () => {
 
 
     const getFlights = () => {
-        axios.get('http://localhost:8080/flights')
+        axios.get('https://flight-management-app-2gci.onrender.com/flights')
         .then((res) => {
             setFlights(res.data);
         });
